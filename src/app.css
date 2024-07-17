@@ -1,0 +1,116 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: rgb(15, 164, 164);
+  }
+  
+  /* Form container */
+  section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  form {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 600px;
+    width: 100%;
+    background-color: #e0ebe9;
+    flex-direction:column;
+  }
+  
+  /* Form title */
+  .South {
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .South div {
+    margin-bottom: 15px;
+  }
+  
+  .South label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .South input[type="text"],
+  .South input[type="date"],
+  .South select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .South .country,
+  .South .state,
+  .South .city {
+    position: relative;
+  }
+  
+  .South .country select,
+  .South .state select,
+  .South .city select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: url('data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCAxMCI+PHBhdGggZD0iTTAgMGwxMCAxMEgwVjB6Ii8+PC9zdmc+') no-repeat right 10px center;
+    padding-right: 30px;
+  }
+  
+  .South .save {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .South .save:hover {
+    background-color: #0056b3;
+  }
+  
+  .error {
+    color: red;
+    font-size: 12px;
+    margin-top: -10px;
+  }
+  
+  
+  /* Responsiveness */
+  @media (max-width: 600px) {
+    form {
+      padding: 15px;
+    }
+  
+    button {
+      padding: 15px;
+    }
+  }
+
+  .country{
+    z-index: 3;      
+  }
+
+  .state{
+    z-index: 2; 
+  }
+
+  .city{
+    z-index: 1; 
+  }
+
+  .save{
+    color: #042f2a;
+    border-radius: 2px;
+  }
