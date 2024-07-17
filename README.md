@@ -15,28 +15,20 @@ Installation
 To get started with this project, follow these steps:
 
 Clone the Repository
-
-bash
-Copy code
 git clone https://github.com/your-username/frequent-research-form.git
+
 Navigate to the Project Directory
 
-bash
-Copy code
 cd frequent-research-form
 Install Dependencies
 
 Make sure you have Node.js and npm installed. Run the following command to install the necessary dependencies:
 
-bash
-Copy code
+
 npm install
-Run the Application
 
 Start the development server with:
 
-bash
-Copy code
 npm start
 Open your browser and navigate to http://localhost:3000 to view the application.
 
