@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import { City, Country, State } from "country-state-city";
 import Selector from "./Selector";
 import './app.css';
-import DisplayData from "./DisplayData";
 
 const App = () => {
   let countryData = Country.getAllCountries();
@@ -28,19 +27,35 @@ const App = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    setStateData([]);
+    setCityData([]);
+    setState();
+    setCity();
     setStateData(State.getStatesOfCountry(country?.isoCode));
   }, [country]);
 
   useEffect(() => {
-    setCityData(City.getCitiesOfState(country?.isoCode, state?.isoCode));
-  }, [state]);
+    setCityData([]);
+    setCity();
+    if (state) {
+      setCityData(City.getCitiesOfState(country?.isoCode, state?.isoCode));
+    }
+  }, [state, country]);
 
   useEffect(() => {
-    stateData && setState(stateData[0]);
+    if (stateData.length) {
+      setState(stateData[0]);
+    } else {
+      setState();
+    }
   }, [stateData]);
 
   useEffect(() => {
-    cityData && setCity(cityData[0]);
+    if (cityData.length) {
+      setCity(cityData[0]);
+    } else {
+      setCity();
+    }
   }, [cityData]);
 
   useEffect(() => {
@@ -84,8 +99,16 @@ const App = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: validateField(name, value) });
+    if (name === "country") {
+      setCountry(countryData.find((c) => c.isoCode === value));
+    } else if (name === "state") {
+      setState(stateData.find((s) => s.isoCode === value));
+    } else if (name === "city") {
+      setCity(cityData.find((c) => c.name === value));
+    } else {
+      setFormData({ ...formData, [name]: value });
+      setErrors({ ...errors, [name]: validateField(name, value) });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -97,7 +120,6 @@ const App = () => {
     setErrors(newErrors);
 
     if (Object.values(newErrors).every((error) => !error)) {
-      // Redirect to the DisplayData component with form data
       navigate("/display-data", { state: { ...formData, country, state, city } });
     }
   };
@@ -107,7 +129,7 @@ const App = () => {
       <div>
         <h2 className="text-2xl font-bold text-teal-900">Frequent Research Form</h2>
         <br />
-        <form onSubmit={handleSubmit} className="South">
+        <form onSubmit={handleSubmit} className="flex flex-wrap bg-teal-300 South">
           <div>
             <label>First Name:</label>
             <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} />
@@ -125,18 +147,30 @@ const App = () => {
           </div>
           <div className="country">
             <label>Country:</label>
-            <Selector data={countryData} selected={country} setSelected={setCountry} />
+            <select name="country" value={country?.isoCode} onChange={handleChange}>
+              {countryData.map((c) => (
+                <option key={c.isoCode} value={c.isoCode}>{c.name}</option>
+              ))}
+            </select>
           </div>
           {state && (
             <div className="state">
               <label>State:</label>
-              <Selector data={stateData} selected={state} setSelected={setState} />
+              <select name="state" value={state?.isoCode} onChange={handleChange}>
+                {stateData.map((s) => (
+                  <option key={s.isoCode} value={s.isoCode}>{s.name}</option>
+                ))}
+              </select>
             </div>
           )}
           {city && (
             <div className="city">
               <label>City:</label>
-              <Selector data={cityData} selected={city} setSelected={setCity} />
+              <select name="city" value={city?.name} onChange={handleChange}>
+                {cityData.map((c) => (
+                  <option key={c.name} value={c.name}>{c.name}</option>
+                ))}
+              </select>
             </div>
           )}
           <div>
@@ -158,6 +192,30 @@ const App = () => {
         </form>
       </div>
     </section>
+  );
+};
+
+const DisplayData = () => {
+  const location = useLocation();
+  const data = location.state;
+
+  if (!data) {
+    return <div>No data available.</div>;
+  }
+
+  return (
+    <div>
+      <h2>Form Data</h2>
+      <p>First Name: {data.firstName}</p>
+      <p>Last Name: {data.lastName}</p>
+      <p>Email: {data.email}</p>
+      <p>Gender: {data.gender}</p>
+      <p>Date of Birth: {data.dob}</p>
+      <p>Age: {data.age}</p>
+      <p>Country: {data.country.name}</p>
+      <p>State: {data.state?.name}</p>
+      <p>City: {data.city?.name}</p>
+    </div>
   );
 };
 
